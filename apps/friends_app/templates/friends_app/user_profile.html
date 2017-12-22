@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{user.alias}}</title>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'friends_app/css/style.css' %}">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div id="header" class="navbar-fixed-top">
+		<h1>Stephen's Friends App</h1>
+		<div id="corner_toolbar">
+			<p>Welcome {{user.alias}}</p>
+			<a href="/logout">Log Off</a>
+			<a href="/wall">Wall</a>
+			<a href="/friends">Home</a>
+		</div>
+	</div>
+	<div class="container">
+		<div id="content">
+			<h1>{{ profile.alias }}'s Profile</h1>
+			{%if images%}
+			<img src="/media/{{images.first.image}} "><br>
+			{%endif%}
+			{%if current_user and images %}
+			<form>
+				{% csrf_token %}
+				<button id="delete" formaction="/user/upload/delete_img" formmethod="post">Delete image</button>
+				<input type="hidden" name="image_id" value="{{images.first.id}}">
+				<input type="hidden" name="user_id" value="{{profile.id}}">
+			</form><br>
+			{%elif current_user and not images %}
+			<div class="form-group">
+				<form action="/user/upload_picture" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<input type="hidden" name="user_id" value="{{user.id}}">
+					<label for="file">Upload your profile picture! (max file size 5MB)</label>
+					<input type="file" name="file"><br>
+					<button type="submit" name="submit" value="Submit">Upload</button>
+				</form>
+			</div>
+			{%endif%}
+			<p>Name: {{profile.first_name}} {{profile.last_name}}</p>
+			{% if profile not in user.friends.all and profile.id != user.id %}
+			<p>Email Address: Must be friends to see email address!</p>
+			{% else %}
+			<p>Email Address: {{profile.email}}</p>
+			{%endif%}
+		</div>	
+	</div>
+</body>
+</html>

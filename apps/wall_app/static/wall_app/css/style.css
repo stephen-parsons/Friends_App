@@ -1,0 +1,82 @@
+body {
+	padding: 0px;
+	margin: auto;
+	background-color: #fff; 
+	background-image: url("../images/wall_background.jpg");
+	background-size: 100%;
+}
+#header h1, p {
+	padding: 0px;
+	margin: 0px;
+}
+#header h1 {
+	margin-left: 85px;
+/*	vertical-align: middle;*/
+}
+#header {
+	height: 75px;
+	background-color: rgba(255,255,255,1);
+	display: flex;
+	justify-content: space-between;
+	padding: 10px;
+	border-bottom: 2px solid black;
+	margin-bottom: 20px; 
+}
+#header p {
+	color: red;
+}
+#corner_toolbar {
+	display: inline-block;
+	margin-right: 20px;
+}
+#corner_toolbar a {
+	float: right;
+	margin-right: 10px;
+}
+
+/*content*/
+
+.centertext {
+	text-align: center;
+}
+#content h1 {
+	margin-top: 0px;
+}
+#content {
+	margin-top: 75px;
+	background-color: white;
+	margin: auto;
+	width: 600px;
+	border: 1px solid black;
+	padding: 10px;
+}
+.flash {
+	color: red;
+	font-weight: bold; 
+}
+
+/*WALL*/
+.container {
+	margin-left: 80px;
+	margin-top: 100px;
+	max-width: 600px;
+}
+#messages {
+	padding: 15px;
+}
+.container div:first-child {
+	padding: 15px;
+}
+.container div {
+	border-radius: 10px;
+	background-color: rgba(255,255,255, 1);
+}
+.indent {
+	margin-left: 20px;
+}
+/*.comment {
+	margin-right: 500px;
+}*/
+#messages img, video {
+	max-width: 400px;
+}

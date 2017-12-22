@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'wall_app/css/style.css' %}">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<title>The Wall</title>
+</head>
+<body>
+	<div id="header" class="navbar-fixed-top">
+		<h1>Stephen's .Gif Wall</h1>
+		<div id="corner_toolbar">
+			<p>Welcome {{user.alias}}</p>
+			<a href="/logout">Log Off</a>
+			<a href="/friends">Friends</a>
+
+		</div>
+	</div>
+	<div class="container">
+			<div class="form-group">
+				<h4>Post a message</h4>
+				<form action="wall/submit_message" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<textarea class="form-control" rows="5" name="message"></textarea><br>
+					<label for="file">Upload your favorite gif! (max file size 5MB)</label>
+					<input type="file" name="file"><br>
+					<button type="submit" name="submit" value="Submit">Post Message</button>
+				</form><br>
+				{% if messages %}
+				<ul class="flash">
+					{% for message in messages %}
+						<li>{{ message }}</li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+			</div>
+			{% if message_list.all %}
+				{% for x in message_list %}
+				<div id="messages">	
+					<h5><a href="/user/{{x.user.id}}">{{x.user.alias}}</a> - {{x.created_at}}</h5>
+					<p>
+						{% for upload in uploads %}
+							{% if upload.message.id == x.id %}
+							<img src="media/{{upload.document}}" alt='bad dir'>
+							{% endif %}
+						{% endfor %}<br><br>	
+						{{x.message}}	
+					</p>
+						{% if x.user.id == request.session.user_id %}
+						<form>
+							{% csrf_token %}
+							<button formaction="wall/delete_msg" formmethod="post">Delete message</button>
+							<input type="hidden" name="message_id" value="{{x.id}}">
+						</form><br>
+						{% endif %}
+						<div id="comments" class="indent">
+						{% for comment in comments %}
+							{% if comment.message.id == x.id %}
+						<h5><a href="/user/{{comment.user.id}}">{{comment.user.alias}}</a> - {{comment.created_at}}</h5>
+						<p>{{comment.comment}}</p>
+								{% if comment.user.id == request.session.user_id %}
+								<form>
+									{% csrf_token %}
+									<button formaction="wall/delete_comment" formmethod="post">Delete comment</button>
+									<input type="hidden" name="comment_id" value="{{comment.id}}">
+								</form><br>
+								{% endif %}
+							{% endif %}
+						{% endfor %}	
+							<div class="form-group">
+								<form class="comment" action="wall/submit_comment" method="post">
+									{% csrf_token %}
+									<input type="hidden" name="message_id" value="{{x.id}}">
+									<textarea class="form-control" rows="2" name="comment"></textarea><br>
+									<button type="submit" name="submit" value="Submit">Post Comment</button>
+								</form>
+							</div>	
+						</div>
+				</div><br>	
+				{% endfor %} 
+			{% endif %}	
+	</div>	
+</body>
+</html>
