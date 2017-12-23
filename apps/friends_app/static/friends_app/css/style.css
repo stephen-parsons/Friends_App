@@ -74,6 +74,10 @@ table img {
 #inline {
 	display: inline-flex;
 }
+.flash {
+	color: red;
+	font-weight: bold; 
+}
 
 
 
