@@ -7,9 +7,11 @@ import bcrypt
 
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
-def index(request):	
-	request.session.clear()	
-	return render(request, "login_and_registration_app/index.html")
+def index(request):
+	if request.session.get('user_id') != None:	
+		return redirect('/friends')
+	else:
+		return render(request, "login_and_registration_app/index.html")
 
 def process(request):
 	if request.method == 'POST':
@@ -51,10 +53,4 @@ def login(request):
 def logout(request):
 	request.session.clear()	
 	return redirect('/')
-
-# def user_dash(request, id):
-# 	if 'user_id' not in request.session:
-# 		return redirect('/')
-# 	else:	
-# 		user = Users.objects.get(id=id)
-# 		return render(request, "main_app/user_dash.html", {'user' : user})		
+	
