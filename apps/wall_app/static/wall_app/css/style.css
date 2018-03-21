@@ -63,9 +63,11 @@ body {
 }
 #messages {
 	padding: 15px;
+	border: solid black 1px;
 }
 .container div:first-child {
 	padding: 15px;
+	border: solid black 1px;
 }
 .container div {
 	border-radius: 10px;
